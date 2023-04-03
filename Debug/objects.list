@@ -1,0 +1,7 @@
+"./Src/i2c_slave_tx_string.o"
+"./Src/sysmem.o"
+"./Startup/startup_stm32f411vetx.o"
+"./drivers/Src/stm32f411_gpio_driver.o"
+"./drivers/Src/stm32f411_i2c_driver.o"
+"./drivers/Src/stm32f411_spi_driver.o"
+"./drivers/Src/stm32f411_usart_driver.o"
