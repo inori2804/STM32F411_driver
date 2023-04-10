@@ -1,0 +1,10 @@
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:18:6:i2c_init	8	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:30:13:i2c_pin_config	24	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:50:13:i2c_config	8	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:61:6:lcd_send_cmd	32	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:74:6:lcd_send_data	32	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:87:6:lcd_clear	16	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:96:6:lcd_init	8	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:121:6:lcd_send_string	16	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:127:6:esp32s2_read	24	static
+../externalDevicesDriver/Src/i2c_lcd_esp32s2.c:144:6:delay	16	static

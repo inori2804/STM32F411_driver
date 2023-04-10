@@ -19,11 +19,11 @@
 
 I2C_Handle_t I2C1Handle;
 //some data
-uint8_t somedata[] = "Testing I2C communication!\n";
+uint8_t somedata[] = "Testing I2C!\n";
 
 void delay(void)
 {
-	for(uint16_t i = 0; i < 500000; i++);
+	for(uint16_t i = 0; i < 5000 ; i++);
 }
 
 void GPIO_ButtonLedInits(void)
@@ -46,11 +46,11 @@ void GPIO_ButtonLedInits(void)
     GPIO_Handle_t GPIOButton;
     memset(&GPIOButton, 0, sizeof(GPIOButton));
 
-    GPIOButton.pGPIOx = GPIOD;
-    GPIOButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NUMBER_5;
+    GPIOButton.pGPIOx = GPIOA;
+    GPIOButton.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NUMBER_0;
     GPIOButton.GPIO_PinConfig.GPIO_PinMode = GPIO_MODE_IN;
     GPIOButton.GPIO_PinConfig.GPIO_PinSpeed = GPIO_SPEED_FAST;
-    GPIOButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PU;
+    GPIOButton.GPIO_PinConfig.GPIO_PinPuPdControl = GPIO_PIN_PD;
 
 //    GPIO_PeripheralClockControl(GPIOD, ENABLE);
     GPIO_Init(&GPIOButton);
@@ -72,12 +72,13 @@ void I2C1_GPIOInits(void)
 	GPIO_Init(&I2CPins);
 
 	//SDA
-	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NUMBER_9;
+	I2CPins.GPIO_PinConfig.GPIO_PinNumber = GPIO_PIN_NUMBER_7;
 	GPIO_Init(&I2CPins);
 }
 
 void I2C1_Init(void)
 {
+	I2C1Handle.pI2Cx = I2C1;
 	I2C1Handle.I2C_Config.I2C_AckControl = I2C_ACK_ENABLE;
 	I2C1Handle.I2C_Config.I2C_DeviceAddress = MY_ADDRESS;
 	I2C1Handle.I2C_Config.I2C_FMDutyCycle = I2C_FM_DUTY_2;
@@ -104,10 +105,10 @@ int main()
 	while(1)
 	{
 		//wait for button press
-		while(!(GPIO_ReadFromInputPin(GPIOD, GPIO_PIN_NUMBER_5)));
+		while(!(GPIO_ReadFromInputPin(GPIOA, GPIO_PIN_NUMBER_0)));
 		//avoid debouncing
 		delay();
 		//send some data
-		I2C_MasterSendData(&I2C1Handle,somedata, strlen((char*)somedata), SLAVE_ADDR);
+		I2C_MasterSendData(&I2C1Handle,somedata, strlen((char*)somedata), SLAVE_ADDR, 0);
 	}
 }

@@ -144,12 +144,10 @@ void I2C_ApplicationEventCallBack(I2C_Handle_t *pI2CHandle, uint8_t AppEv)
 		{
 			//send the length information for the master
 			I2C_SlaveSendData(pI2CHandle->pI2Cx, strlen((char*)tx_buffer));
-			commandCode = 0xff;
 		} else if(commandCode == 0x52)
 		{
 			//send context of Tx buff
 			I2C_SlaveSendData(pI2CHandle->pI2Cx, tx_buffer[Cnt++]);
-			commandCode = 0xff;
 		}
 	} else if(AppEv == I2C_EV_DATA_RCV)
 	{

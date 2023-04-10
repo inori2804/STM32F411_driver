@@ -1,0 +1,11 @@
+../externalDevicesDriver/Src/rtc_ds1307.c:24:9:ds1307_init	16	static
+../externalDevicesDriver/Src/rtc_ds1307.c:44:6:ds1307_set_current_time	24	static
+../externalDevicesDriver/Src/rtc_ds1307.c:66:6:ds1307_get_current_time	24	static
+../externalDevicesDriver/Src/rtc_ds1307.c:100:6:ds1307_set_current_date	16	static
+../externalDevicesDriver/Src/rtc_ds1307.c:107:6:ds1307_get_current_date	24	static
+../externalDevicesDriver/Src/rtc_ds1307.c:120:13:ds1307_pin_config	24	static
+../externalDevicesDriver/Src/rtc_ds1307.c:140:13:ds1307_i2c_config	8	static
+../externalDevicesDriver/Src/rtc_ds1307.c:150:13:ds1307_write	32	static
+../externalDevicesDriver/Src/rtc_ds1307.c:158:16:ds1307_read	32	static
+../externalDevicesDriver/Src/rtc_ds1307.c:166:16:binary_to_bcd	24	static
+../externalDevicesDriver/Src/rtc_ds1307.c:181:16:bcd_to_binary	24	static

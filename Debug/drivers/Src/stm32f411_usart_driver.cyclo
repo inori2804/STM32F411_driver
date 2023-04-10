@@ -1,0 +1,15 @@
+stm32f411_usart_driver.c:16:6:USART_PeripheralClockControl	8
+stm32f411_usart_driver.c:54:6:USART_Init	9
+stm32f411_usart_driver.c:147:6:USART_DeInit	1
+stm32f411_usart_driver.c:167:6:USART_SetBaudRate	5
+stm32f411_usart_driver.c:250:6:USART_SendData	6
+stm32f411_usart_driver.c:312:6:USART_ReceiveData	5
+stm32f411_usart_driver.c:389:9:USART_SendDataIT	2
+stm32f411_usart_driver.c:428:9:USART_ReceiveDataIT	2
+stm32f411_usart_driver.c:450:6:USART_IRQInterruptConfig	8
+stm32f411_usart_driver.c:501:6:USART_IRQHandling	30
+stm32f411_usart_driver.c:795:6:USART_PeripheralControl	2
+stm32f411_usart_driver.c:811:9:USART_GetFlagStatus	2
+stm32f411_usart_driver.c:824:6:USART_ClearFlag	1
+stm32f411_usart_driver.c:832:13:USART_ApplicationEventCallback	1
+stm32f411_usart_driver.c:837:13:USART_ClearIRQErrFlag	1

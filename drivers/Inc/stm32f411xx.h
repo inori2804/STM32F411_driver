@@ -344,6 +344,13 @@ typedef struct
 #define SYSCFG_PCLK_DI()	( RCC->APB2ENR &= ~( 1 << 14 ) )
 
 /*
+ * Clock Disable Macros for USARTx peripherals
+ */
+#define USART2_PCLK_DI()	( RCC->APB1ENR &= ~( 1 << 17 ) )
+#define USART1_PCLK_DI()	( RCC->APB2ENR &= ~( 1 << 4 ) )
+#define USART6_PCLK_DI()	( RCC->APB2ENR &= ~( 1 << 5 ) )
+
+/*
  * GPIO Peripherals Reset Macros
  */
 #define GPIOA_REG_RESET()	do{ (RCC->AHB1RSTR |= (1 << 0)); (RCC->AHB1RSTR &= ~(1 << 0));} while(0)
@@ -397,6 +404,8 @@ typedef struct
 
 #define IRQ_NO_I2C1_EV			31
 #define IRQ_NO_I2C1_ER			32
+
+#define IRQ_NO_USART2			38
 /*
  * IRQ Priority levels macros
  */
@@ -622,5 +631,6 @@ typedef struct
 #include"stm32f411_spi_driver.h"
 #include"stm32f411_i2c_driver.h"
 #include"stm32f411_usart_driver.h"
+#include"stm32f411_rcc_driver.h"
 
 #endif /* INC_STM32F411XX_H_ */

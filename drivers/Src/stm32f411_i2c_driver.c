@@ -8,8 +8,6 @@
 #include"stm32f411_i2c_driver.h"
 
 
-uint16_t AHB_Prescaler[8] = {2, 4, 8, 16, 64, 128, 256, 512};
-uint16_t APB_Prescaler[4] = {2, 4, 8, 16};
 
 static void I2C_GenerateStartCondition(I2C_RegDef_t *pI2Cx);
 static void I2C_ExecuteAddressPhaseWrite(I2C_RegDef_t *pI2Cx, uint8_t SlaveAddr);
@@ -50,46 +48,9 @@ void I2C_PeripheralClockControl(I2C_RegDef_t *pI2Cx, uint8_t EnorDi)
 	}
 }
 
-uint32_t RCC_GetPLLOutputClock(void)
-{
-	return 0;
-}
 
 
-uint32_t RCC_GetPCLK1Value(void)
-{
-	uint32_t pclk1, Systemclk;
-	uint8_t clksrc, temp, ahbp, apb1p;
 
-	clksrc = ((RCC->CFGR >> 2) & 0x3);
-	if(clksrc == 0)
-	{
-		Systemclk = 16000000;
-	} else if(clksrc == 1)
-	{
-		Systemclk = 8000000;
-	} else if(clksrc == 2)
-	{
-		Systemclk = RCC_GetPLLOutputClock();
-	}
-	//for AHP1
-	temp = ((RCC->CFGR >> 4) & 0xF);
-	if(temp < 8)
-	{
-		ahbp = 1;
-	} else
-		ahbp = AHB_Prescaler[temp - 8];
-	//for APB1
-	temp = ((RCC->CFGR >> 10) & 0x7);
-	if(temp < 4)
-	{
-		apb1p = 1;
-	} else
-		apb1p = APB_Prescaler[temp - 4];
-
-	pclk1 = Systemclk / (ahbp * apb1p);
-	return pclk1;
-}
 
 /*
  * Init and De-Init
@@ -121,7 +82,7 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 	tempreg |= RCC_GetPCLK1Value() / 1000000U;
 	pI2CHandle->pI2Cx->CR2 = (tempreg & 0x3F);
 
-	//store the slave address
+	//store the master address (applicable when it use in slave mode)
 	tempreg = 0;
 	tempreg |= (pI2CHandle->I2C_Config.I2C_DeviceAddress << 1);
 	tempreg |= (1 << 14);
@@ -152,17 +113,16 @@ void I2C_Init(I2C_Handle_t *pI2CHandle)
 	pI2CHandle->pI2Cx->CCR = tempreg;
 
 	//TRISE configuration (do later)
-	uint8_t trise;
 	if(pI2CHandle->I2C_Config.I2C_SCLSpeed <= I2C_SCL_SPEED_SM)
 	{
 		//mode is standard mode
-		trise = (RCC_GetPCLK1Value() / 1000000U) + 1;
+		tempreg = (RCC_GetPCLK1Value() / 1000000U) + 1;
 	} else
 	{
 		//mode is fast mode
-		trise = ((RCC_GetPCLK1Value() * 300) / 1000000000U) + 1;
+		tempreg = ((RCC_GetPCLK1Value() * 300) / 1000000000U) + 1;
 	}
-	pI2CHandle->pI2Cx->TRISE = (trise & 0x3F);
+	pI2CHandle->pI2Cx->TRISE = (tempreg & 0x3F);
 }
 
 
@@ -252,7 +212,7 @@ void I2C_MasterSendData(I2C_Handle_t* pI2CHandle, uint8_t *pTxBuffer, uint32_t L
 	while(!(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_SB_FLAG)));
 
 	//3. Send the address of the slave with r/nw bit set to w(0) (total 8bits)
-	I2C_ExecuteAddressPhaseWrite(pI2CHandle->pI2Cx, pI2CHandle->I2C_Config.I2C_DeviceAddress);
+	I2C_ExecuteAddressPhaseWrite(pI2CHandle->pI2Cx, SlaveAddr);
 
 	//4. Confirm that the address phase is completely by checking the ADDR flag in the SR1
 	while(!(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_ADDR_FLAG)));
@@ -291,7 +251,7 @@ void I2C_MasterReceiveData(I2C_Handle_t* pI2CHandle, uint8_t *pRxBuffer, uint32_
 	while(!(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_SB_FLAG)));
 
 	//3. Send the address of the slave with r/nw bit set to R(1) (total 8bits)
-	I2C_ExecuteAddressPhaseRead(pI2CHandle->pI2Cx, pI2CHandle->I2C_Config.I2C_DeviceAddress);
+	I2C_ExecuteAddressPhaseRead(pI2CHandle->pI2Cx, SlaveAddr);
 
 	//4. Confirm that the address phase is completely by checking the ADDR flag in the SR1
 	while(!(I2C_GetFlagStatus(pI2CHandle->pI2Cx, I2C_ADDR_FLAG)));
